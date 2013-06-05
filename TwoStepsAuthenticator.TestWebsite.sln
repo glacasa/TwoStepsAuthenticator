@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoStepsAuthenticator.TestWebsite", "TwoStepsAuthenticator.TestWebsite\TwoStepsAuthenticator.TestWebsite.csproj", "{C61D3D65-5461-43E9-9E13-9DF85671ED27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoStepsAuthenticator", "TwoStepsAuthenticator\TwoStepsAuthenticator.csproj", "{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C61D3D65-5461-43E9-9E13-9DF85671ED27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C61D3D65-5461-43E9-9E13-9DF85671ED27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C61D3D65-5461-43E9-9E13-9DF85671ED27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C61D3D65-5461-43E9-9E13-9DF85671ED27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
