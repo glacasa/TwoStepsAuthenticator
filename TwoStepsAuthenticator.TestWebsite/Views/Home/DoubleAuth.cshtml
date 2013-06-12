@@ -1,0 +1,16 @@
+﻿@model TwoStepsAuthenticator.TestWebsite.Users.WebsiteUser
+
+@{
+    ViewBag.Title = "DoubleAuth";
+}
+
+<h2>DoubleAuth</h2>
+
+@using (Html.BeginForm("DoubleAuth", "Home", FormMethod.Post))
+{
+    <div>
+        <input type="text" name="code" />
+        <br />
+        <input type="submit" value="Submit"/>
+    </div>
+}
