@@ -14,18 +14,18 @@ namespace TwoStepsAuthenticator
         //private static final int INTERVAL = 30;
         HMACSHA1 mac;
 
-        public void GetPinCode(string key, DateTime date)
+        public void GetPinCode(string secret, DateTime date)
         {            
             TimeSpan ts = (date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
             var interval = (long)ts.TotalSeconds / 30;
 
             var challengeBytes = BitConverter.GetBytes(interval);
+
+
+            var key = Base32Encoding.ToBytes(secret);
             // OK jusque là
-
-
-
-            mac = new HMACSHA1(Base32Encoding.ToBytes(key));
-
+            mac = new HMACSHA1(key);
+            
             var hash = mac.ComputeHash(challengeBytes);
             //var hash = mac.TransformFinalBlock(challengeBytes);
             //int offset = hash[hash.Length - 1] & 0xF;
