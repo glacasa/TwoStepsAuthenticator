@@ -9,34 +9,63 @@ namespace TwoStepsAuthenticator
 {
     public class TwoStepsAuthenticator
     {
-        //private static final int PASS_CODE_LENGTH = 6;
-        ///** Default passcode timeout period (in seconds) */
-        //private static final int INTERVAL = 30;
-        HMACSHA1 mac;
 
-        public void GetPinCode(string secret, DateTime date)
-        {            
+        public string GetCode(string secret)
+        {
+            return GetCode(secret, DateTime.Now);
+        }
+
+        public string GetCode(string secret, DateTime date)
+        {
+            var key = Base32Encoding.ToBytes(secret);
+            for (int i = secret.Length; i < key.Length; i++)
+            {
+                key[i] = 0;
+            }
+
             TimeSpan ts = (date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
             var interval = (long)ts.TotalSeconds / 30;
 
-            var challengeBytes = BitConverter.GetBytes(interval);
+            long chlg = interval;
+            byte[] challenge = new byte[8];
+            for (int j = 7; j >= 0; j--)
+            {
+                challenge[j] = (byte)((int)chlg & 0xff);
+                chlg >>= 8;
+            }
 
+            HMACSHA1 mac = new HMACSHA1(key);
+            var hash = mac.ComputeHash(challenge);
 
-            var key = Base32Encoding.ToBytes(secret);
-            // OK jusque là
-            mac = new HMACSHA1(key);
-            
-            var hash = mac.ComputeHash(challengeBytes);
-            //var hash = mac.TransformFinalBlock(challengeBytes);
-            //int offset = hash[hash.Length - 1] & 0xF;
-            //int truncatedHash = hashToInt(hash, offset) & 0x7FFFFFFF;
+            int offset = hash[hash.Length - 1] & 0xf;
+
+            int truncatedHash = 0;
+            for (int j = 0; j < 4; j++)
+            {
+                truncatedHash <<= 8;
+                truncatedHash |= hash[offset + j];
+            }
+
+            truncatedHash &= 0x7FFFFFFF;
+            truncatedHash %= 1000000;
+
+            string code = truncatedHash.ToString();
+            return code.PadLeft(6, '0');
         }
 
-
-
-        private int hashToInt(byte[] bytes, int start)
+        public bool CheckCode(string secret, string code)
         {
-            return BitConverter.ToInt32(bytes, start);
+            var baseTime = DateTime.Now;
+            for (int i = -2; i <= 2; i++)
+            {
+                var checkTime = baseTime.AddSeconds(30 * i);
+                if (GetCode(secret, checkTime) == code)
+                    return true;
+            }
+
+            return false;
         }
+
+
     }
 }
