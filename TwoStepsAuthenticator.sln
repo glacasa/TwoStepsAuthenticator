@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoStepsAuthenticator.TestW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoStepsAuthenticator", "TwoStepsAuthenticator\TwoStepsAuthenticator.csproj", "{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwoStepsAuthenticator.TestApp", "TwoStepsAuthenticator.TestApp\TwoStepsAuthenticator.TestApp.csproj", "{53C4F81C-4322-4637-B79B-8676ACAEFDCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C898CD1-0BF3-4711-847E-AD7DAC815CD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53C4F81C-4322-4637-B79B-8676ACAEFDCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53C4F81C-4322-4637-B79B-8676ACAEFDCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53C4F81C-4322-4637-B79B-8676ACAEFDCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53C4F81C-4322-4637-B79B-8676ACAEFDCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TwoStepsAuthenticator
 {
-    public class TwoStepsAuthenticator
+    public class Authenticator
     {
 
         public string GetCode(string secret)

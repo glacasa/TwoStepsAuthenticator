@@ -57,7 +57,6 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="default.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +69,12 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TwoStepsAuthenticator\TwoStepsAuthenticator.csproj">
+      <Project>{6c898cd1-0bf3-4711-847e-ad7dac815cd8}</Project>
+      <Name>TwoStepsAuthenticator</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
