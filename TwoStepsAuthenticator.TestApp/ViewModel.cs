@@ -72,10 +72,9 @@ namespace TwoStepsAuthenticatorTestApp
 
         public ViewModel()
         {
-            var auth = new TwoStepsAuthenticator.Authenticator();
-            this.Key = auth.GenerateKey();
+            var authenticator = new TwoStepsAuthenticator.Authenticator();
+            this.Key = authenticator.GenerateKey();
             timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, timerCallback, App.Current.Dispatcher);
-            //timer.Elapsed += timer_Elapsed;
             timer.Start();
         }
 
@@ -98,6 +97,8 @@ namespace TwoStepsAuthenticatorTestApp
         {
             var auth = new TwoStepsAuthenticator.Authenticator();
             Code = auth.GetCode(this.Key);
+
+            auth.CheckCode(key, Code);
         }
     }
 }
