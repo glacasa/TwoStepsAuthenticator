@@ -13,7 +13,14 @@ namespace TwoStepsAuthenticator
 
         public string GenerateKey()
         {
-            throw new NotImplementedException();
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var random = new Random();
+            var keyChars = new char[16];
+            for (int i = 0; i < 16; i++)
+            {
+                keyChars[i] = chars[random.Next(chars.Length)];
+            }
+            return new String(keyChars);
         }
 
         public string GetCode(string secret)

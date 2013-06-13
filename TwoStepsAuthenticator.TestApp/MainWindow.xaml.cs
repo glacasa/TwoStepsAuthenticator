@@ -25,7 +25,6 @@ namespace TwoStepsAuthenticatorTestApp
         {
             InitializeComponent();
             model = new ViewModel();
-            model.Key="JBSWY3DPEHPK3PXP";
             this.DataContext = model;
         }
 

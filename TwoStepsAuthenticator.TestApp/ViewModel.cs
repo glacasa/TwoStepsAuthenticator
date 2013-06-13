@@ -72,6 +72,8 @@ namespace TwoStepsAuthenticatorTestApp
 
         public ViewModel()
         {
+            var auth = new TwoStepsAuthenticator.Authenticator();
+            this.Key = auth.GenerateKey();
             timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, timerCallback, App.Current.Dispatcher);
             //timer.Elapsed += timer_Elapsed;
             timer.Start();
