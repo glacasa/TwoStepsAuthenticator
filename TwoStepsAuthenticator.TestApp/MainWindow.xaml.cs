@@ -31,7 +31,7 @@ namespace TwoStepsAuthenticatorTestApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            model.GetCode();
+            model.GetCode();            
         }
     }
 }

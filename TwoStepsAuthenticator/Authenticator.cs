@@ -9,6 +9,12 @@ namespace TwoStepsAuthenticator
 {
     public class Authenticator
     {
+        private static UsedCodesManager usedCodes = new UsedCodesManager();
+
+        public string GenerateKey()
+        {
+            throw new NotImplementedException();
+        }
 
         public string GetCode(string secret)
         {
@@ -55,16 +61,23 @@ namespace TwoStepsAuthenticator
 
         public bool CheckCode(string secret, string code)
         {
+            if (usedCodes.IsCodeUsed(secret, code))
+                return false;
+
             var baseTime = DateTime.Now;
-            for (int i = -2; i <= 2; i++)
+            for (int i = -2; i <= 1; i++)
             {
                 var checkTime = baseTime.AddSeconds(30 * i);
                 if (GetCode(secret, checkTime) == code)
+                {
+                    usedCodes.AddCode(secret, code);
                     return true;
+                }
             }
 
             return false;
         }
+
 
 
     }
