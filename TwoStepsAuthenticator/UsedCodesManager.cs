@@ -41,14 +41,14 @@ namespace TwoStepsAuthenticator
         public UsedCodesManager()
         {
             codes = new Queue<UsedCode>();
-            cleaner = new Timer(TimeSpan.FromSeconds(5).TotalMilliseconds);
+            cleaner = new Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
             cleaner.Elapsed += cleaner_Elapsed;
             cleaner.Start();
         }
 
         void cleaner_Elapsed(object sender, ElapsedEventArgs e)
         {
-            var timeToClean = DateTime.Now.AddSeconds(-5);
+            var timeToClean = DateTime.Now.AddMinutes(-5);
             lock (codeLock)
             {
                 while (codes.Count > 0 && codes.Peek().UseDate < timeToClean)
