@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace TwoStepsAuthenticator
 {
-    // This class was found just here : http://stackoverflow.com/questions/641361/base32-decoding
-    // No licence information, I think I'm allowed to use it here.
+    // This class was found here : http://stackoverflow.com/questions/641361/base32-decoding
     public class Base32Encoding
     {
         public static byte[] ToBytes(string input)
