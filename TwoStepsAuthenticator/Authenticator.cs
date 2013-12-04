@@ -13,6 +13,11 @@ namespace TwoStepsAuthenticator
         private static readonly RNGCryptoServiceProvider Random = new RNGCryptoServiceProvider();    // Is Thread-Safe
         private static readonly int KeyLength = 16;
         private static readonly string AvailableKeyChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+        private readonly Func<DateTime> NowFunc;
+
+        public Authenticator(Func<DateTime> nowFunc = null) {
+            this.NowFunc = (nowFunc == null) ? () => DateTime.Now : nowFunc;
+        }
 
         public string GenerateKey()
         {
@@ -26,7 +31,7 @@ namespace TwoStepsAuthenticator
 
         public string GetCode(string secret)
         {
-            return GetCode(secret, DateTime.Now);
+            return GetCode(secret, NowFunc());
         }
 
         public string GetCode(string secret, DateTime date)
@@ -42,8 +47,7 @@ namespace TwoStepsAuthenticator
 
             long chlg = interval;
             byte[] challenge = new byte[8];
-            for (int j = 7; j >= 0; j--)
-            {
+            for (int j = 7; j >= 0; j--) {
                 challenge[j] = (byte)((int)chlg & 0xff);
                 chlg >>= 8;
             }
@@ -72,21 +76,34 @@ namespace TwoStepsAuthenticator
             if (usedCodes.Value.IsCodeUsed(secret, code))
                 return false;
 
-            var baseTime = DateTime.Now;
+            var baseTime = NowFunc();
+
+            // We need to do this in constant time
+            var codeMatch = false;
             for (int i = -2; i <= 1; i++)
             {
                 var checkTime = baseTime.AddSeconds(30 * i);
-                if (GetCode(secret, checkTime) == code)
+                if (ConstantTimeEquals(GetCode(secret, checkTime), code))
                 {
+                    codeMatch = true;
                     usedCodes.Value.AddCode(secret, code);
-                    return true;
                 }
             }
 
-            return false;
+            return codeMatch;
         }
 
-        public int RandomInt(int max) {
+        private bool ConstantTimeEquals(string a, string b) {
+            uint diff = (uint)a.Length ^ (uint)b.Length;
+
+            for (int i = 0; i < a.Length && i < b.Length; i++) {
+                diff |= (uint)a[i] ^ (uint)b[i];
+            }
+
+            return diff == 0;
+        }
+
+        private int RandomInt(int max) {
             var randomBytes = new byte[4];
             Random.GetBytes(randomBytes);
 
