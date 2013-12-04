@@ -10,15 +10,16 @@ namespace TwoStepsAuthenticator
     public class Authenticator
     {
         private static Lazy<UsedCodesManager> usedCodes = new Lazy<UsedCodesManager>();
+        private static readonly RNGCryptoServiceProvider Random = new RNGCryptoServiceProvider();    // Is Thread-Safe
+        private static readonly int KeyLength = 16;
+        private static readonly string AvailableKeyChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
         public string GenerateKey()
         {
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-            var random = new Random();
-            var keyChars = new char[16];
-            for (int i = 0; i < 16; i++)
+            var keyChars = new char[KeyLength];
+            for (int i = 0; i < keyChars.Length; i++)
             {
-                keyChars[i] = chars[random.Next(chars.Length)];
+                keyChars[i] = AvailableKeyChars[RandomInt(AvailableKeyChars.Length)];
             }
             return new String(keyChars);
         }
@@ -85,6 +86,12 @@ namespace TwoStepsAuthenticator
             return false;
         }
 
+        public int RandomInt(int max) {
+            var randomBytes = new byte[4];
+            Random.GetBytes(randomBytes);
+
+            return Math.Abs((int)BitConverter.ToUInt32(randomBytes, 0) % max);
+        }
 
 
     }
