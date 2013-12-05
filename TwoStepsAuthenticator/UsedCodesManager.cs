@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace TwoStepsAuthenticator
 {
-    public class UsedCodesManager
+    public class UsedCodesManager : TwoStepsAuthenticator.IUsedCodesManager
     {
         internal class UsedCode
         {
