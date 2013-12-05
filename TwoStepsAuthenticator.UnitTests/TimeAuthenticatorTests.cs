@@ -30,5 +30,20 @@ namespace TwoStepsAuthenticator.UnitTests {
             Assert.IsTrue(authenticator.CheckCode(secret, code));
 
         }
+
+        [Test]
+        public void VerifyUsedTime() {
+            var date = DateTime.Parse("2013-12-05 17:23:50 +0100");
+            var authenticator = new TimeAuthenticator(() => date);
+
+            DateTime usedTime;
+
+            Assert.True(authenticator.CheckCode("H22Q7WAMQYFZOJ2Q", "696227", out usedTime));
+
+            // 17:23:50 - 30s
+            Assert.AreEqual(usedTime.Hour, 17);
+            Assert.AreEqual(usedTime.Minute, 23);
+            Assert.AreEqual(usedTime.Second, 20);
+        }
     }
 }

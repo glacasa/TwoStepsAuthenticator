@@ -38,5 +38,17 @@ namespace TwoStepsAuthenticator.UnitTests {
 
         }
 
+        [Test]
+        public void VerifyUsedCounter() {
+            var authenticator = new CounterAuthenticator();
+
+            // Test Values from http://www.ietf.org/rfc/rfc4226.txt - Appendix D
+            var base32Secret = Base32Encoding.ToString(Encoding.ASCII.GetBytes("12345678901234567890"));
+
+            long usedCounter;
+            Assert.True(authenticator.CheckCode(base32Secret, "520489", 0L, out usedCounter));
+
+            Assert.AreEqual(usedCounter, 9L);
+        }
     }
 }

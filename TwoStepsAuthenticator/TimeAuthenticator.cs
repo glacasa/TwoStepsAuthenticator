@@ -45,7 +45,21 @@ namespace TwoStepsAuthenticator {
         /// <param name="code">OTP</param>
         /// <returns>true if code matches</returns>
         public bool CheckCode(string secret, string code) {
+            DateTime successfulTime = DateTime.MinValue;
+
+            return CheckCode(secret, code, out successfulTime);
+        }
+
+        /// <summary>
+        /// Checks if the passed code is valid.
+        /// </summary>
+        /// <param name="secret">Shared Secret</param>
+        /// <param name="code">OTP</param>
+        /// <param name="usedDateTime">Matching time if successful</param>
+        /// <returns>true if code matches</returns>
+        public bool CheckCode(string secret, string code, out DateTime usedDateTime) {
             var baseTime = NowFunc();
+            DateTime successfulTime = DateTime.MinValue;
 
             // We need to do this in constant time
             var codeMatch = false;
@@ -53,9 +67,11 @@ namespace TwoStepsAuthenticator {
                 var checkTime = baseTime.AddSeconds(30 * i);
                 if (ConstantTimeEquals(GetCode(secret, checkTime), code)) {
                     codeMatch = true;
+                    successfulTime = checkTime;
                 }
             }
 
+            usedDateTime = successfulTime;
             return codeMatch;
         }
     }

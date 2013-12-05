@@ -38,13 +38,31 @@ namespace TwoStepsAuthenticator {
         /// <param name="counter">Current Counter Position</param>
         /// <returns>true if any code from counter to counter + WindowSize matches</returns>
         public bool CheckCode(string secret, string code, long counter) {
+            long successfulSequenceNumber = 0L;
+
+            return CheckCode(secret, code, counter, out successfulSequenceNumber);
+        }
+
+        /// <summary>
+        /// Checks if the passed code is valid.
+        /// </summary>
+        /// <param name="secret">Shared Secret</param>
+        /// <param name="code">OTP</param>
+        /// <param name="counter">Current Counter Position</param>
+        /// <param name="usedCounter">Matching counter value if successful</param>
+        /// <returns>true if any code from counter to counter + WindowSize matches</returns>
+        public bool CheckCode(string secret, string code, long counter, out long usedCounter) {
             var codeMatch = false;
+            long successfulSequenceNumber = 0L;
+
             for (int i = 0; i <= WindowSize; i++) {
                 if (ConstantTimeEquals(GetCode(secret, counter + i), code)) {
                     codeMatch = true;
+                    successfulSequenceNumber = counter + i;
                 }
             }
 
+            usedCounter = successfulSequenceNumber;
             return codeMatch;
         }
     }
