@@ -12,7 +12,7 @@ namespace TwoStepsAuthenticator.UnitTests {
         [Test]
         public void CreateKey() {
             var authenticator = new TimeAuthenticator();
-            var secret = authenticator.GenerateKey();
+            var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
             Assert.IsTrue(authenticator.CheckCode(secret, code), "Generated Code doesn't verify");

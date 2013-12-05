@@ -13,7 +13,7 @@ namespace TwoStepsAuthenticator.UnitTests {
         [Test]
         public void CreateKey() {
             var authenticator = new CounterAuthenticator();
-            var secret = authenticator.GenerateKey();
+            var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret, 0L);
 
             Assert.IsTrue(authenticator.CheckCode(secret, code, 0L), "Generated Code doesn't verify");

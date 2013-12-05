@@ -13,7 +13,7 @@ namespace TwoStepsAuthenticator
         private static readonly int KeyLength = 16;
         private static readonly string AvailableKeyChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
-        public string GenerateKey() {
+        public static string GenerateKey() {
             var keyChars = new char[KeyLength];
             for (int i = 0; i < keyChars.Length; i++) {
                 keyChars[i] = AvailableKeyChars[RandomInt(AvailableKeyChars.Length)];
@@ -62,7 +62,7 @@ namespace TwoStepsAuthenticator
             return diff == 0;
         }
 
-        protected int RandomInt(int max) {
+        protected static int RandomInt(int max) {
             var randomBytes = new byte[4];
             Random.GetBytes(randomBytes);
 
