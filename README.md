@@ -1,7 +1,7 @@
 TwoStepsAuthenticator
 =====================
 
-.net implementation of the TOTP: Time-Based One-Time Password Algorithm and HOPT: HMAC-Based One-Time Password Algorithm<br/>
+.net implementation of the TOTP: Time-Based One-Time Password Algorithm and HOTP: HMAC-Based One-Time Password Algorithm<br/>
 RFC 6238 http://tools.ietf.org/html/rfc6238<br>
 RFC 4226 http://tools.ietf.org/html/rfc4226
 
