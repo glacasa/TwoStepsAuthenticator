@@ -7,9 +7,9 @@ using System.Timers;
 
 namespace TwoStepsAuthenticator
 {
-    internal class UsedCodesManager
+    public class UsedCodesManager
     {
-        private class UsedCode
+        internal class UsedCode
         {
             public UsedCode(String secret, String code)
             {
@@ -17,12 +17,17 @@ namespace TwoStepsAuthenticator
                 this.Code = secret + code;
             }
 
-            public DateTime UseDate { get; set; }
-            public String Code { get; set; }
+            public DateTime UseDate { get; private set; }
+            public String Code { get; private set; }
 
             public override bool Equals(object obj)
             {
-                return obj.ToString().Equals(Code);
+                if (Object.ReferenceEquals(this, obj)) {
+                    return true;
+                }
+
+                var other = obj as UsedCode;
+                return (other != null) ? this.Code.Equals(other.Code) : false;
             }
             public override string ToString()
             {
@@ -34,9 +39,10 @@ namespace TwoStepsAuthenticator
             }
         }
 
-        private Queue<UsedCode> codes;
-        private object codeLock = new object();
-        private Timer cleaner;
+        private readonly Queue<UsedCode> codes;
+        private readonly System.Threading.ReaderWriterLock rwlock = new System.Threading.ReaderWriterLock();
+        private readonly TimeSpan lockingTimeout = TimeSpan.FromSeconds(5);
+        private readonly Timer cleaner;
 
         public UsedCodesManager()
         {
@@ -49,28 +55,45 @@ namespace TwoStepsAuthenticator
         void cleaner_Elapsed(object sender, ElapsedEventArgs e)
         {
             var timeToClean = DateTime.Now.AddMinutes(-5);
-            lock (codeLock)
+
+            try 
             {
-                while (codes.Count > 0 && codes.Peek().UseDate < timeToClean)
-                {
+                rwlock.AcquireWriterLock(lockingTimeout);
+
+                while (codes.Count > 0 && codes.Peek().UseDate < timeToClean) {
                     codes.Dequeue();
                 }
+            } 
+            finally 
+            {
+                rwlock.ReleaseWriterLock();
             }
         }
 
         public void AddCode(String secret, String code)
         {
-            lock (codeLock)
-            {
+            try {
+                rwlock.AcquireWriterLock(lockingTimeout);
+
                 codes.Enqueue(new UsedCode(secret, code));
+            } 
+            finally 
+            {
+                rwlock.ReleaseWriterLock();
             }
         }
 
         public bool IsCodeUsed(String secret, String code)
         {
-            lock (codeLock)
+            try 
             {
+                rwlock.AcquireReaderLock(lockingTimeout);
+
                 return codes.Contains(new UsedCode(secret, code));
+            } 
+            finally 
+            {
+                rwlock.ReleaseReaderLock();
             }
         }
     }

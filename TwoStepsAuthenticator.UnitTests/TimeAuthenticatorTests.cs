@@ -7,11 +7,11 @@ using NUnit.Framework;
 namespace TwoStepsAuthenticator.UnitTests {
     
     [TestFixture]
-    public class AuthenticatorTests {
+    public class TimeAuthenticatorTests {
 
         [Test]
         public void CreateKey() {
-            var authenticator = new Authenticator();
+            var authenticator = new TimeAuthenticator();
             var secret = authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
@@ -26,7 +26,7 @@ namespace TwoStepsAuthenticator.UnitTests {
         public void VerifyKeys(string secret, string timeString, string code) {
             var date = DateTime.Parse(timeString);
 
-            var authenticator = new Authenticator(() => date);
+            var authenticator = new TimeAuthenticator(() => date);
             Assert.IsTrue(authenticator.CheckCode(secret, code));
 
         }
