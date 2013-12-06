@@ -32,8 +32,21 @@ namespace TwoStepsAuthenticator.UnitTests {
             var code = authenticator.GetCode(secret);
 
             authenticator.CheckCode(secret, code);
+
             Assert.AreEqual(mockUsedCodesManager.LastChallenge, 0uL);
             Assert.AreEqual(mockUsedCodesManager.LastCode, code);
+        }
+
+        [Test]
+        public void Prevent_code_reuse() {
+            var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var usedCodesManager = new UsedCodesManager();
+            var authenticator = new TimeAuthenticator(() => date, usedCodeManager: usedCodesManager);
+            var secret = Authenticator.GenerateKey();
+            var code = authenticator.GetCode(secret);
+
+            Assert.IsTrue(authenticator.CheckCode(secret, code));
+            Assert.IsFalse(authenticator.CheckCode(secret, code));
         }
 
         // Test Vectors from http://tools.ietf.org/html/rfc6238#appendix-B have all length 8. We want a length of 6.

@@ -10,13 +10,15 @@ namespace TwoStepsAuthenticator {
     /// Implementation of rfc6238 Time-Based One-Time Password Algorithm
     /// </summary>
     public class TimeAuthenticator : Authenticator {
+        private static readonly Lazy<IUsedCodesManager> DefaultUsedCodeManager = new Lazy<IUsedCodesManager>(() => new UsedCodesManager());
+
         private readonly Func<DateTime> NowFunc;
         private readonly IUsedCodesManager UsedCodeManager;
         private readonly int IntervalSeconds;
 
         public TimeAuthenticator(Func<DateTime> nowFunc = null, IUsedCodesManager usedCodeManager = null, int intervalSeconds = 30) {
             this.NowFunc = (nowFunc == null) ? () => DateTime.Now : nowFunc;
-            this.UsedCodeManager = (usedCodeManager == null) ? Authenticator.DefaultUsedCodeManager.Value : usedCodeManager;
+            this.UsedCodeManager = (usedCodeManager == null) ? DefaultUsedCodeManager.Value : usedCodeManager;
             this.IntervalSeconds = intervalSeconds;
         }
 
@@ -66,7 +68,7 @@ namespace TwoStepsAuthenticator {
             var codeMatch = false;
             for (int i = -2; i <= 1; i++) {
                 var checkTime = baseTime.AddSeconds(IntervalSeconds * i);
-                ulong checkInterval = (ulong)GetInterval(checkTime);
+                var checkInterval = GetInterval(checkTime);
 
                 if (ConstantTimeEquals(GetCode(secret, checkTime), code) && !UsedCodeManager.IsCodeUsed(checkInterval, code)) {
                     codeMatch = true;

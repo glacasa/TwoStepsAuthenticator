@@ -14,23 +14,23 @@ namespace TwoStepsAuthenticator.UnitTests {
         public void Can_add_codes() {
             var manager = new UsedCodesManager();
 
-            Assert.IsFalse(manager.IsCodeUsed(42uL, "def"));
-            manager.AddCode(42uL, "def");
-            Assert.IsTrue(manager.IsCodeUsed(42uL, "def"));
+            Assert.IsFalse(manager.IsCodeUsed(42L, "def"));
+            manager.AddCode(42L, "def");
+            Assert.IsTrue(manager.IsCodeUsed(42L, "def"));
         }
 
     }
 
     internal class MockUsedCodesManager : IUsedCodesManager {
-        public ulong? LastChallenge { get; private set; }
+        public long? LastChallenge { get; private set; }
         public string LastCode { get; private set; }
 
-        public void AddCode(ulong challenge, string code) {
+        public void AddCode(long challenge, string code) {
             this.LastChallenge = challenge;
             this.LastCode = code;
         }
 
-        public bool IsCodeUsed(ulong challenge, string code) {
+        public bool IsCodeUsed(long challenge, string code) {
             return false;
         }
     }
