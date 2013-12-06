@@ -35,17 +35,4 @@ var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
 bool isok = authenticator.CheckCode(secret, code);
 </code></pre>
 
-Every code should only be used once. To prevent repeated use of a code a UsedCodesManager class is provided.<br>
-It should be used as a singleton instance.
-
-<pre><code>
-var usedCodesManager = new UsedCodesManager();
-var secret = user.secretAuthToken;
-var code = Request.Form["code"];
-if (autenticator.CheckCode(secret, code) && usedCodesManager.IsCodeUsed(secret, code)) {
-	usedCodesManager.AddCode(secret, code);
-    // OK
-} else {
-	// Not OK
-}
-</code></pre>
+Every time-based code should only be used once. A build in mechanism ensures that. If you want to control this check by your self you can pass in an instance of IUsedCodesManager.
