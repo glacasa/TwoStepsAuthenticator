@@ -72,8 +72,8 @@ namespace TwoStepsAuthenticatorTestApp
 
         public ViewModel()
         {
-            var authenticator = new TwoStepsAuthenticator.Authenticator();
-            this.Key = authenticator.GenerateKey();
+            var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
+            this.Key = TwoStepsAuthenticator.Authenticator.GenerateKey();
             timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, timerCallback, App.Current.Dispatcher);
             timer.Start();
         }
@@ -95,7 +95,7 @@ namespace TwoStepsAuthenticatorTestApp
 
         internal void GetCode()
         {
-            var auth = new TwoStepsAuthenticator.Authenticator();
+            var auth = new TwoStepsAuthenticator.TimeAuthenticator();
             Code = auth.GetCode(this.Key);
 
             auth.CheckCode(key, Code);
