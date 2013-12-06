@@ -14,15 +14,15 @@ namespace TwoStepsAuthenticator
     {
         internal sealed class UsedCode
         {
-            public UsedCode(ulong challenge, String code)
+            public UsedCode(long timestamp, String code)
             {
                 this.UseDate = DateTime.Now;
                 this.Code = code;
-                this.ChallengeValue = challenge;
+                this.Timestamp = timestamp;
             }
 
             internal DateTime UseDate { get; private set; }
-            internal ulong ChallengeValue { get; private set; }
+            internal long Timestamp { get; private set; }
             internal String Code { get; private set; }
 
             public override bool Equals(object obj)
@@ -32,15 +32,15 @@ namespace TwoStepsAuthenticator
                 }
 
                 var other = obj as UsedCode;
-                return (other != null) ? this.Code.Equals(other.Code) && this.ChallengeValue.Equals(other.ChallengeValue) : false;
+                return (other != null) ? this.Code.Equals(other.Code) && this.Timestamp.Equals(other.Timestamp) : false;
             }
             public override string ToString()
             {
-                return String.Format("{0}: {1}", ChallengeValue, Code);
+                return String.Format("{0}: {1}", Timestamp, Code);
             }
             public override int GetHashCode()
             {
-                return Code.GetHashCode() + ChallengeValue.GetHashCode() * 17;
+                return Code.GetHashCode() + Timestamp.GetHashCode() * 17;
             }
         }
 
@@ -75,12 +75,12 @@ namespace TwoStepsAuthenticator
             }
         }
 
-        public void AddCode(ulong challenge, String code)
+        public void AddCode(long timestamp, String code)
         {
             try {
                 rwlock.AcquireWriterLock(lockingTimeout);
 
-                codes.Enqueue(new UsedCode(challenge, code));
+                codes.Enqueue(new UsedCode(timestamp, code));
             } 
             finally 
             {
@@ -88,13 +88,13 @@ namespace TwoStepsAuthenticator
             }
         }
 
-        public bool IsCodeUsed(ulong challenge, String code)
+        public bool IsCodeUsed(long timestamp, String code)
         {
             try 
             {
                 rwlock.AcquireReaderLock(lockingTimeout);
 
-                return codes.Contains(new UsedCode(challenge, code));
+                return codes.Contains(new UsedCode(timestamp, code));
             } 
             finally 
             {

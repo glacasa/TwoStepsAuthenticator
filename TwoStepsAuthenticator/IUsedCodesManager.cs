@@ -12,7 +12,7 @@ namespace TwoStepsAuthenticator {
         /// </summary>
         /// <param name="challenge">Used Challenge</param>
         /// <param name="code">Used Code</param>
-        void AddCode(ulong challenge, string code);
+        void AddCode(long timestamp, string code);
 
         /// <summary>
         /// Checks if code was previously used.
@@ -20,6 +20,6 @@ namespace TwoStepsAuthenticator {
         /// <param name="challenge">Used Challenge</param>
         /// <param name="code">Used Code</param>
         /// <returns></returns>
-        bool IsCodeUsed(ulong challenge, string code);
+        bool IsCodeUsed(long timestamp, string code);
     }
 }

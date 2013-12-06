@@ -41,6 +41,7 @@ var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
 bool isok = authenticator.CheckCode(secret, code);
 </code></pre>
 
+<<<<<<< HEAD
 ### Used codes manager
 
 Every code should only be used once. To prevent repeated use of a code a IUsedCodesManager interface is provided.<br>
@@ -59,3 +60,6 @@ When you create a new Authenticator, add the instance of your IUsedCodesManager 
 var usedCodeManager = new CustomUsedCodeManager();
 var authenticator = new TwoStepsAuthenticator.TimeAuthenticator(usedCodeManager);
 </code></pre>
+=======
+Every time-based code should only be used once. A built-in mechanism ensures that. If you want to control this check by your self you can pass in an instance of IUsedCodesManager.
+>>>>>>> 57f740845da867fc270d9b185508bc5761aa7d45

@@ -14,9 +14,9 @@ namespace TwoStepsAuthenticator.UnitTests {
         public void Can_add_codes() {
             var manager = new UsedCodesManager();
 
-            Assert.IsFalse(manager.IsCodeUsed(42uL, "def"));
-            manager.AddCode(42uL, "def");
-            Assert.IsTrue(manager.IsCodeUsed(42uL, "def"));
+            Assert.IsFalse(manager.IsCodeUsed(42L, "def"));
+            manager.AddCode(42L, "def");
+            Assert.IsTrue(manager.IsCodeUsed(42L, "def"));
         }
 
     }

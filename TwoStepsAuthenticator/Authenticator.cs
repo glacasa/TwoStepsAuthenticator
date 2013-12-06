@@ -12,7 +12,6 @@ namespace TwoStepsAuthenticator
         private static readonly RNGCryptoServiceProvider Random = new RNGCryptoServiceProvider();    // Is Thread-Safe
         private static readonly int KeyLength = 16;
         private static readonly string AvailableKeyChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
-        internal static readonly Lazy<IUsedCodesManager> DefaultUsedCodeManager = new Lazy<IUsedCodesManager>(() => new UsedCodesManager());
 
         public static string GenerateKey() {
             var keyChars = new char[KeyLength];

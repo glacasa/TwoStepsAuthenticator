@@ -13,16 +13,12 @@ namespace TwoStepsAuthenticator
     public class CounterAuthenticator : Authenticator
     {
         private readonly int WindowSize;
-        private readonly IUsedCodesManager UsedCodeManager;
 
-        public CounterAuthenticator(IUsedCodesManager usedCodeManager = null, int windowSize = 10)
-        {
-            if (windowSize <= 0)
-            {
+        public CounterAuthenticator(int windowSize = 10) {
+            if (windowSize <= 0) {
                 throw new ArgumentException("look-ahead window size must be positive");
             }
 
-            this.UsedCodeManager = (usedCodeManager == null) ? Authenticator.DefaultUsedCodeManager.Value : usedCodeManager;
             this.WindowSize = windowSize;
         }
 
@@ -67,12 +63,9 @@ namespace TwoStepsAuthenticator
             for (uint i = 0; i <= WindowSize; i++)
             {
                 ulong checkCounter = counter + i;
-                if (ConstantTimeEquals(GetCode(secret, checkCounter), code) && !UsedCodeManager.IsCodeUsed(checkCounter, code))
-                {
+                if (ConstantTimeEquals(GetCode(secret, checkCounter), code)) {
                     codeMatch = true;
                     successfulSequenceNumber = checkCounter;
-
-                    UsedCodeManager.AddCode(successfulSequenceNumber, code);
                 }
             }
 
