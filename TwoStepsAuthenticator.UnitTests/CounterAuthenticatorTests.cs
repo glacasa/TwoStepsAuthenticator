@@ -20,17 +20,17 @@ namespace TwoStepsAuthenticator.UnitTests {
         }
 
         // Test Values from http://www.ietf.org/rfc/rfc4226.txt - Appendix D
-        [TestCase("12345678901234567890", 0L, "755224")]
-        [TestCase("12345678901234567890", 1L, "287082")]
-        [TestCase("12345678901234567890", 2L, "359152")]
-        [TestCase("12345678901234567890", 3L, "969429")]
-        [TestCase("12345678901234567890", 4L, "338314")]
-        [TestCase("12345678901234567890", 5L, "254676")]
-        [TestCase("12345678901234567890", 6L, "287922")]
-        [TestCase("12345678901234567890", 7L, "162583")]
-        [TestCase("12345678901234567890", 8L, "399871")]
-        [TestCase("12345678901234567890", 9L, "520489")]
-        public void VerifyKeys(string secret, long counter, string code) {
+        [TestCase("12345678901234567890", 0uL, "755224")]
+        [TestCase("12345678901234567890", 1uL, "287082")]
+        [TestCase("12345678901234567890", 2uL, "359152")]
+        [TestCase("12345678901234567890", 3uL, "969429")]
+        [TestCase("12345678901234567890", 4uL, "338314")]
+        [TestCase("12345678901234567890", 5uL, "254676")]
+        [TestCase("12345678901234567890", 6uL, "287922")]
+        [TestCase("12345678901234567890", 7uL, "162583")]
+        [TestCase("12345678901234567890", 8uL, "399871")]
+        [TestCase("12345678901234567890", 9uL, "520489")]
+        public void VerifyKeys(string secret, ulong counter, string code) {
             var authenticator = new CounterAuthenticator();
             var base32Secret = Base32Encoding.ToString(Encoding.ASCII.GetBytes(secret));
 
@@ -45,10 +45,10 @@ namespace TwoStepsAuthenticator.UnitTests {
             // Test Values from http://www.ietf.org/rfc/rfc4226.txt - Appendix D
             var base32Secret = Base32Encoding.ToString(Encoding.ASCII.GetBytes("12345678901234567890"));
 
-            long usedCounter;
-            Assert.True(authenticator.CheckCode(base32Secret, "520489", 0L, out usedCounter));
+            ulong usedCounter;
+            Assert.True(authenticator.CheckCode(base32Secret, "520489", 0uL, out usedCounter));
 
-            Assert.AreEqual(usedCounter, 9L);
+            Assert.AreEqual(usedCounter, 9uL);
         }
     }
 }

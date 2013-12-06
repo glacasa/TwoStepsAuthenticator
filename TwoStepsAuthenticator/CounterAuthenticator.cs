@@ -26,7 +26,7 @@ namespace TwoStepsAuthenticator {
         /// <param name="secret">Shared Secret</param>
         /// <param name="counter">Current Counter</param>
         /// <returns>OTP</returns>
-        public string GetCode(string secret, long counter) {
+        public string GetCode(string secret, ulong counter) {
             return GetCodeInternal(secret, counter);
         }
 
@@ -37,8 +37,8 @@ namespace TwoStepsAuthenticator {
         /// <param name="code">OTP</param>
         /// <param name="counter">Current Counter Position</param>
         /// <returns>true if any code from counter to counter + WindowSize matches</returns>
-        public bool CheckCode(string secret, string code, long counter) {
-            long successfulSequenceNumber = 0L;
+        public bool CheckCode(string secret, string code, ulong counter) {
+            ulong successfulSequenceNumber = 0uL;
 
             return CheckCode(secret, code, counter, out successfulSequenceNumber);
         }
@@ -51,11 +51,11 @@ namespace TwoStepsAuthenticator {
         /// <param name="counter">Current Counter Position</param>
         /// <param name="usedCounter">Matching counter value if successful</param>
         /// <returns>true if any code from counter to counter + WindowSize matches</returns>
-        public bool CheckCode(string secret, string code, long counter, out long usedCounter) {
+        public bool CheckCode(string secret, string code, ulong counter, out ulong usedCounter) {
             var codeMatch = false;
-            long successfulSequenceNumber = 0L;
+            ulong successfulSequenceNumber = 0uL;
 
-            for (int i = 0; i <= WindowSize; i++) {
+            for (uint i = 0; i <= WindowSize; i++) {
                 if (ConstantTimeEquals(GetCode(secret, counter + i), code)) {
                     codeMatch = true;
                     successfulSequenceNumber = counter + i;

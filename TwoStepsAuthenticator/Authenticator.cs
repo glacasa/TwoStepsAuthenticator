@@ -21,8 +21,8 @@ namespace TwoStepsAuthenticator
             return new String(keyChars);
         }
 
-        protected string GetCodeInternal(string secret, long challengeValue) {
-            long chlg = challengeValue;
+        protected string GetCodeInternal(string secret, ulong challengeValue) {
+            ulong chlg = challengeValue;
             byte[] challenge = new byte[8];
             for (int j = 7; j >= 0; j--) {
                 challenge[j] = (byte)((int)chlg & 0xff);

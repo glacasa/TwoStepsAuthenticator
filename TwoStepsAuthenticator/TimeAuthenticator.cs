@@ -35,7 +35,7 @@ namespace TwoStepsAuthenticator {
             TimeSpan ts = (date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
             var interval = (long)ts.TotalSeconds / 30;
 
-            return GetCodeInternal(secret, interval);
+            return GetCodeInternal(secret, (ulong)interval);
         }
 
         /// <summary>
