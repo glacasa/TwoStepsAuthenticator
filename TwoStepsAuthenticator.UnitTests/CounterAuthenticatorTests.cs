@@ -14,9 +14,9 @@ namespace TwoStepsAuthenticator.UnitTests {
         public void CreateKey() {
             var authenticator = new CounterAuthenticator();
             var secret = Authenticator.GenerateKey();
-            var code = authenticator.GetCode(secret, 0L);
+            var code = authenticator.GetCode(secret, 0uL);
 
-            Assert.IsTrue(authenticator.CheckCode(secret, code, 0L), "Generated Code doesn't verify");
+            Assert.IsTrue(authenticator.CheckCode(secret, code, 0uL), "Generated Code doesn't verify");
         }
 
         // Test Values from http://www.ietf.org/rfc/rfc4226.txt - Appendix D

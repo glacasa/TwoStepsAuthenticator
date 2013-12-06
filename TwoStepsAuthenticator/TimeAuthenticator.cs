@@ -11,9 +11,13 @@ namespace TwoStepsAuthenticator {
     /// </summary>
     public class TimeAuthenticator : Authenticator {
         private readonly Func<DateTime> NowFunc;
+        private readonly IUsedCodesManager UsedCodeManager;
+        private readonly int IntervalSeconds;
 
-        public TimeAuthenticator(Func<DateTime> nowFunc = null) {
+        public TimeAuthenticator(Func<DateTime> nowFunc = null, IUsedCodesManager usedCodeManager = null, int intervalSeconds = 30) {
             this.NowFunc = (nowFunc == null) ? () => DateTime.Now : nowFunc;
+            this.UsedCodeManager = (usedCodeManager == null) ? new UsedCodesManager() : usedCodeManager;
+            this.IntervalSeconds = intervalSeconds;
         }
 
         /// <summary>
@@ -32,10 +36,7 @@ namespace TwoStepsAuthenticator {
         /// <param name="date">Time to use as challenge</param>
         /// <returns>OTP</returns>
         public string GetCode(string secret, DateTime date) {
-            TimeSpan ts = (date.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            var interval = (long)ts.TotalSeconds / 30;
-
-            return GetCodeInternal(secret, (ulong)interval);
+            return GetCodeInternal(secret, (ulong)GetInterval(date));
         }
 
         /// <summary>
@@ -64,15 +65,24 @@ namespace TwoStepsAuthenticator {
             // We need to do this in constant time
             var codeMatch = false;
             for (int i = -2; i <= 1; i++) {
-                var checkTime = baseTime.AddSeconds(30 * i);
-                if (ConstantTimeEquals(GetCode(secret, checkTime), code)) {
+                var checkTime = baseTime.AddSeconds(IntervalSeconds * i);
+                ulong checkInterval = (ulong)GetInterval(checkTime);
+
+                if (ConstantTimeEquals(GetCode(secret, checkTime), code) && !UsedCodeManager.IsCodeUsed(checkInterval, code)) {
                     codeMatch = true;
                     successfulTime = checkTime;
+
+                    UsedCodeManager.AddCode(checkInterval, code);
                 }
             }
 
             usedDateTime = successfulTime;
             return codeMatch;
+        }
+
+        private long GetInterval(DateTime dateTime) {
+            TimeSpan ts = (dateTime.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+            return (long)ts.TotalSeconds / IntervalSeconds;
         }
     }
 }
