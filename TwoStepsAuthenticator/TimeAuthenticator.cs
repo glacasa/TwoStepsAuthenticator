@@ -14,7 +14,7 @@ namespace TwoStepsAuthenticator {
         private readonly IUsedCodesManager UsedCodeManager;
         private readonly int IntervalSeconds;
 
-        public TimeAuthenticator(Func<DateTime> nowFunc = null, IUsedCodesManager usedCodeManager = null, int intervalSeconds = 30) {
+        public TimeAuthenticator(IUsedCodesManager usedCodeManager = null, Func<DateTime> nowFunc = null,  int intervalSeconds = 30) {
             this.NowFunc = (nowFunc == null) ? () => DateTime.Now : nowFunc;
             this.UsedCodeManager = (usedCodeManager == null) ? Authenticator.DefaultUsedCodeManager.Value : usedCodeManager;
             this.IntervalSeconds = intervalSeconds;

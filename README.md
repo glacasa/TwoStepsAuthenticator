@@ -9,6 +9,10 @@ Compatible with Microsoft Authenticator for Windows Phone, and Google Authentica
 
 You can use this library as well for a client application (if you want to create your own authenticator) or for a server application (add two-step authentication on your asp.net website)
 
+# TOTP: Time-Based One-Time Password Algorithm
+
+## Client usage
+
 For a client application, you need to save the secret key for your user. <br/>
 Then, you only have to call the method GetCode(string) :
 
@@ -17,6 +21,8 @@ var secret = user.secretAuthToken;
 var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
 var code = authenticator.GetCode(secret);
 </code></pre>
+
+## Server usage
 
 On a server application, you will have to generate a secret key, and share it with the user, who will have to enter it in his own authenticator app.
 
@@ -35,17 +41,21 @@ var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
 bool isok = authenticator.CheckCode(secret, code);
 </code></pre>
 
-Every code should only be used once. To prevent repeated use of a code a UsedCodesManager class is provided.<br>
-It should be used as a singleton instance.
+### Used codes manager
 
+Every code should only be used once. To prevent repeated use of a code a IUsedCodesManager interface is provided.<br>
+
+A default implementation is provided : used codes are kept in memory for 5 minutes (long enough for codes to become invalid)
+
+You can define how the used codes are stored, for example if you want to handle persistence (database storage), or if you have multiple webservers.<br/>
+You have to implement the 2 methods of the IUsedCodesManager :
 <pre><code>
-var usedCodesManager = new UsedCodesManager();
-var secret = user.secretAuthToken;
-var code = Request.Form["code"];
-if (autenticator.CheckCode(secret, code) && usedCodesManager.IsCodeUsed(secret, code)) {
-	usedCodesManager.AddCode(secret, code);
-    // OK
-} else {
-	// Not OK
-}
+void AddCode(ulong challenge, string code);
+bool IsCodeUsed(ulong challenge, string code);
+</code></pre>
+
+When you create a new Authenticator, add the instance of your IUsedCodesManager as the first param
+<pre><code>
+var usedCodeManager = new CustomUsedCodeManager();
+var authenticator = new TwoStepsAuthenticator.TimeAuthenticator(usedCodeManager);
 </code></pre>

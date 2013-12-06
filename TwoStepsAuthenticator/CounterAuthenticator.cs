@@ -4,17 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TwoStepsAuthenticator {
+namespace TwoStepsAuthenticator
+{
 
     /// <summary>
     /// Implementation of RFC 4226 Counter-Based One-Time Password Algorithm
     /// </summary>
-    public class CounterAuthenticator : Authenticator {
+    public class CounterAuthenticator : Authenticator
+    {
         private readonly int WindowSize;
         private readonly IUsedCodesManager UsedCodeManager;
 
-        public CounterAuthenticator(int windowSize = 10, IUsedCodesManager usedCodeManager = null) {
-            if (windowSize <= 0) {
+        public CounterAuthenticator(IUsedCodesManager usedCodeManager = null, int windowSize = 10)
+        {
+            if (windowSize <= 0)
+            {
                 throw new ArgumentException("look-ahead window size must be positive");
             }
 
@@ -28,7 +32,8 @@ namespace TwoStepsAuthenticator {
         /// <param name="secret">Shared Secret</param>
         /// <param name="counter">Current Counter</param>
         /// <returns>OTP</returns>
-        public string GetCode(string secret, ulong counter) {
+        public string GetCode(string secret, ulong counter)
+        {
             return GetCodeInternal(secret, counter);
         }
 
@@ -39,7 +44,8 @@ namespace TwoStepsAuthenticator {
         /// <param name="code">OTP</param>
         /// <param name="counter">Current Counter Position</param>
         /// <returns>true if any code from counter to counter + WindowSize matches</returns>
-        public bool CheckCode(string secret, string code, ulong counter) {
+        public bool CheckCode(string secret, string code, ulong counter)
+        {
             ulong successfulSequenceNumber = 0uL;
 
             return CheckCode(secret, code, counter, out successfulSequenceNumber);
@@ -53,13 +59,16 @@ namespace TwoStepsAuthenticator {
         /// <param name="counter">Current Counter Position</param>
         /// <param name="usedCounter">Matching counter value if successful</param>
         /// <returns>true if any code from counter to counter + WindowSize matches</returns>
-        public bool CheckCode(string secret, string code, ulong counter, out ulong usedCounter) {
+        public bool CheckCode(string secret, string code, ulong counter, out ulong usedCounter)
+        {
             var codeMatch = false;
             ulong successfulSequenceNumber = 0uL;
 
-            for (uint i = 0; i <= WindowSize; i++) {
+            for (uint i = 0; i <= WindowSize; i++)
+            {
                 ulong checkCounter = counter + i;
-                if (ConstantTimeEquals(GetCode(secret, checkCounter), code) && !UsedCodeManager.IsCodeUsed(checkCounter, code)) {
+                if (ConstantTimeEquals(GetCode(secret, checkCounter), code) && !UsedCodeManager.IsCodeUsed(checkCounter, code))
+                {
                     codeMatch = true;
                     successfulSequenceNumber = checkCounter;
 

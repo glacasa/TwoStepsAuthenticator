@@ -4,20 +4,24 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace TwoStepsAuthenticator.UnitTests {
-    
+namespace TwoStepsAuthenticator.UnitTests
+{
+
     [TestFixture]
-    public class TimeAuthenticatorTests {
+    public class TimeAuthenticatorTests
+    {
         private MockUsedCodesManager mockUsedCodesManager { get; set; }
 
         [SetUp]
-        public void SetUp() {
+        public void SetUp()
+        {
             this.mockUsedCodesManager = new MockUsedCodesManager();
         }
 
         [Test]
-        public void CreateKey() {
-            var authenticator = new TimeAuthenticator(usedCodeManager: mockUsedCodesManager);
+        public void CreateKey()
+        {
+            var authenticator = new TimeAuthenticator(mockUsedCodesManager);
             var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
@@ -25,9 +29,10 @@ namespace TwoStepsAuthenticator.UnitTests {
         }
 
         [Test]
-        public void Uses_usedCodesManager() {
+        public void Uses_usedCodesManager()
+        {
             var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            var authenticator = new TimeAuthenticator(() => date, usedCodeManager: mockUsedCodesManager);
+            var authenticator = new TimeAuthenticator(mockUsedCodesManager, () => date);
             var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
@@ -41,18 +46,20 @@ namespace TwoStepsAuthenticator.UnitTests {
         [TestCase("DRMK64PPMMC7TDZF", "2013-12-04 18:33:01 +0100", "661188")]
         [TestCase("EQOGSM3XZUH6SE2Y", "2013-12-04 18:34:56 +0100", "256804")]
         [TestCase("4VU7EQACVDMFJSBG", "2013-12-04 18:36:16 +0100", "800872")]
-        public void VerifyKeys(string secret, string timeString, string code) {
+        public void VerifyKeys(string secret, string timeString, string code)
+        {
             var date = DateTime.Parse(timeString);
 
-            var authenticator = new TimeAuthenticator(() => date, usedCodeManager: mockUsedCodesManager);
+            var authenticator = new TimeAuthenticator(mockUsedCodesManager, () => date);
             Assert.IsTrue(authenticator.CheckCode(secret, code));
 
         }
 
         [Test]
-        public void VerifyUsedTime() {
+        public void VerifyUsedTime()
+        {
             var date = DateTime.Parse("2013-12-05 17:23:50 +0100");
-            var authenticator = new TimeAuthenticator(() => date, usedCodeManager: mockUsedCodesManager);
+            var authenticator = new TimeAuthenticator(mockUsedCodesManager, () => date);
 
             DateTime usedTime;
 
