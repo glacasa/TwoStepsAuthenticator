@@ -35,4 +35,4 @@ var authenticator = new TwoStepsAuthenticator.TimeAuthenticator();
 bool isok = authenticator.CheckCode(secret, code);
 </code></pre>
 
-Every time-based code should only be used once. A build in mechanism ensures that. If you want to control this check by your self you can pass in an instance of IUsedCodesManager.
+Every time-based code should only be used once. A built-in mechanism ensures that. If you want to control this check by your self you can pass in an instance of IUsedCodesManager.
