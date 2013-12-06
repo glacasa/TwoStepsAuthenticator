@@ -9,10 +9,27 @@ namespace TwoStepsAuthenticator.UnitTests {
 
     [TestFixture]
     public class CounterAuthenticatorTests {
+        private MockUsedCodesManager mockUsedCodesManager { get; set; }
+
+        [SetUp]
+        public void SetUp() {
+            this.mockUsedCodesManager = new MockUsedCodesManager();
+        }
+
+        [Test]
+        public void Uses_usedCodesManager() {
+            var authenticator = new CounterAuthenticator(usedCodeManager: mockUsedCodesManager);
+            var secret = Authenticator.GenerateKey();
+            var code = authenticator.GetCode(secret, 42uL);
+
+            authenticator.CheckCode(secret, code, 42uL);
+            Assert.AreEqual(mockUsedCodesManager.LastChallenge, 42uL);
+            Assert.AreEqual(mockUsedCodesManager.LastCode, code);
+        }
 
         [Test]
         public void CreateKey() {
-            var authenticator = new CounterAuthenticator();
+            var authenticator = new CounterAuthenticator(usedCodeManager: mockUsedCodesManager);
             var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret, 0uL);
 
@@ -31,7 +48,7 @@ namespace TwoStepsAuthenticator.UnitTests {
         [TestCase("12345678901234567890", 8uL, "399871")]
         [TestCase("12345678901234567890", 9uL, "520489")]
         public void VerifyKeys(string secret, ulong counter, string code) {
-            var authenticator = new CounterAuthenticator();
+            var authenticator = new CounterAuthenticator(usedCodeManager: mockUsedCodesManager);
             var base32Secret = Base32Encoding.ToString(Encoding.ASCII.GetBytes(secret));
 
             Assert.IsTrue(authenticator.CheckCode(base32Secret, code, counter));
@@ -40,7 +57,7 @@ namespace TwoStepsAuthenticator.UnitTests {
 
         [Test]
         public void VerifyUsedCounter() {
-            var authenticator = new CounterAuthenticator();
+            var authenticator = new CounterAuthenticator(usedCodeManager: mockUsedCodesManager);
 
             // Test Values from http://www.ietf.org/rfc/rfc4226.txt - Appendix D
             var base32Secret = Base32Encoding.ToString(Encoding.ASCII.GetBytes("12345678901234567890"));

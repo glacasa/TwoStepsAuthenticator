@@ -8,14 +8,32 @@ namespace TwoStepsAuthenticator.UnitTests {
     
     [TestFixture]
     public class TimeAuthenticatorTests {
+        private MockUsedCodesManager mockUsedCodesManager { get; set; }
+
+        [SetUp]
+        public void SetUp() {
+            this.mockUsedCodesManager = new MockUsedCodesManager();
+        }
 
         [Test]
         public void CreateKey() {
-            var authenticator = new TimeAuthenticator();
+            var authenticator = new TimeAuthenticator(usedCodeManager: mockUsedCodesManager);
             var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
             Assert.IsTrue(authenticator.CheckCode(secret, code), "Generated Code doesn't verify");
+        }
+
+        [Test]
+        public void Uses_usedCodesManager() {
+            var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var authenticator = new TimeAuthenticator(() => date, usedCodeManager: mockUsedCodesManager);
+            var secret = Authenticator.GenerateKey();
+            var code = authenticator.GetCode(secret);
+
+            authenticator.CheckCode(secret, code);
+            Assert.AreEqual(mockUsedCodesManager.LastChallenge, 0uL);
+            Assert.AreEqual(mockUsedCodesManager.LastCode, code);
         }
 
         // Test Vectors from http://tools.ietf.org/html/rfc6238#appendix-B have all length 8. We want a length of 6.
@@ -26,7 +44,7 @@ namespace TwoStepsAuthenticator.UnitTests {
         public void VerifyKeys(string secret, string timeString, string code) {
             var date = DateTime.Parse(timeString);
 
-            var authenticator = new TimeAuthenticator(() => date);
+            var authenticator = new TimeAuthenticator(() => date, usedCodeManager: mockUsedCodesManager);
             Assert.IsTrue(authenticator.CheckCode(secret, code));
 
         }
@@ -34,7 +52,7 @@ namespace TwoStepsAuthenticator.UnitTests {
         [Test]
         public void VerifyUsedTime() {
             var date = DateTime.Parse("2013-12-05 17:23:50 +0100");
-            var authenticator = new TimeAuthenticator(() => date);
+            var authenticator = new TimeAuthenticator(() => date, usedCodeManager: mockUsedCodesManager);
 
             DateTime usedTime;
 

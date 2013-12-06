@@ -18,7 +18,7 @@ namespace TwoStepsAuthenticator {
                 throw new ArgumentException("look-ahead window size must be positive");
             }
 
-            this.UsedCodeManager = (usedCodeManager == null) ? new UsedCodesManager() : usedCodeManager;
+            this.UsedCodeManager = (usedCodeManager == null) ? Authenticator.DefaultUsedCodeManager.Value : usedCodeManager;
             this.WindowSize = windowSize;
         }
 
