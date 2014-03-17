@@ -45,7 +45,7 @@ namespace TwoStepsAuthenticator.TestWebsite.Controllers
         {
             WebsiteUser user = (WebsiteUser)Session["AuthenticatedUser"];
             var auth = new TwoStepsAuthenticator.TimeAuthenticator(usedCodeManager: usedCodesManager);
-            if (auth.CheckCode(user.DoubleAuthKey, code))
+            if (auth.CheckCode(user.DoubleAuthKey, code, user))
             {
                 FormsAuthentication.SetAuthCookie(user.Login, true);
                 return RedirectToAction("Welcome");

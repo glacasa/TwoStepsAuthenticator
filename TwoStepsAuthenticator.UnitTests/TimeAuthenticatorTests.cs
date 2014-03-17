@@ -46,7 +46,7 @@ namespace TwoStepsAuthenticator.UnitTests
         public void Prevent_code_reuse() {
             var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var usedCodesManager = new UsedCodesManager();
-            var authenticator = new TimeAuthenticator(() => date, usedCodeManager: usedCodesManager);
+            var authenticator = new TimeAuthenticator(usedCodesManager, () => date);
             var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
@@ -76,7 +76,7 @@ namespace TwoStepsAuthenticator.UnitTests
 
             DateTime usedTime;
 
-            Assert.True(authenticator.CheckCode("H22Q7WAMQYFZOJ2Q", "696227", out usedTime));
+            Assert.True(authenticator.CheckCode("H22Q7WAMQYFZOJ2Q", "696227", null, out usedTime));
 
             // 17:23:50 - 30s
             Assert.AreEqual(usedTime.Hour, 17);

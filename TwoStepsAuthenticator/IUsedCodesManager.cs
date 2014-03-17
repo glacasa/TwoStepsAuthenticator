@@ -12,14 +12,16 @@ namespace TwoStepsAuthenticator {
         /// </summary>
         /// <param name="challenge">Used Challenge</param>
         /// <param name="code">Used Code</param>
-        void AddCode(long timestamp, string code);
+        /// <param name="user">The user</param>
+        void AddCode(long timestamp, string code, object user);
 
         /// <summary>
         /// Checks if code was previously used.
         /// </summary>
         /// <param name="challenge">Used Challenge</param>
         /// <param name="code">Used Code</param>
-        /// <returns></returns>
-        bool IsCodeUsed(long timestamp, string code);
+        /// <param name="user">The user</param>
+        /// <returns>True if the user as already used the code</returns>
+        bool IsCodeUsed(long timestamp, string code, object user);
     }
 }

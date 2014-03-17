@@ -14,25 +14,28 @@ namespace TwoStepsAuthenticator
     {
         internal sealed class UsedCode
         {
-            public UsedCode(long timestamp, String code)
+            public UsedCode(long timestamp, String code, object user)
             {
                 this.UseDate = DateTime.Now;
                 this.Code = code;
                 this.Timestamp = timestamp;
+                this.User = user;
             }
 
             internal DateTime UseDate { get; private set; }
             internal long Timestamp { get; private set; }
             internal String Code { get; private set; }
+            internal object User { get; private set; }
 
             public override bool Equals(object obj)
             {
-                if (Object.ReferenceEquals(this, obj)) {
+                if (Object.ReferenceEquals(this, obj))
+                {
                     return true;
                 }
 
                 var other = obj as UsedCode;
-                return (other != null) ? this.Code.Equals(other.Code) && this.Timestamp.Equals(other.Timestamp) : false;
+                return (other != null) && this.Code.Equals(other.Code) && this.Timestamp.Equals(other.Timestamp) && this.User.Equals(other.User);
             }
             public override string ToString()
             {
@@ -40,7 +43,7 @@ namespace TwoStepsAuthenticator
             }
             public override int GetHashCode()
             {
-                return Code.GetHashCode() + Timestamp.GetHashCode() * 17;
+                return Code.GetHashCode() + (Timestamp.GetHashCode() + User.GetHashCode() * 17) * 17;
             }
         }
 
@@ -61,42 +64,44 @@ namespace TwoStepsAuthenticator
         {
             var timeToClean = DateTime.Now.AddMinutes(-5);
 
-            try 
+            try
             {
                 rwlock.AcquireWriterLock(lockingTimeout);
 
-                while (codes.Count > 0 && codes.Peek().UseDate < timeToClean) {
+                while (codes.Count > 0 && codes.Peek().UseDate < timeToClean)
+                {
                     codes.Dequeue();
                 }
-            } 
-            finally 
+            }
+            finally
             {
                 rwlock.ReleaseWriterLock();
             }
         }
 
-        public void AddCode(long timestamp, String code)
+        public void AddCode(long timestamp, String code, object user)
         {
-            try {
+            try
+            {
                 rwlock.AcquireWriterLock(lockingTimeout);
 
-                codes.Enqueue(new UsedCode(timestamp, code));
-            } 
-            finally 
+                codes.Enqueue(new UsedCode(timestamp, code, user));
+            }
+            finally
             {
                 rwlock.ReleaseWriterLock();
             }
         }
 
-        public bool IsCodeUsed(long timestamp, String code)
+        public bool IsCodeUsed(long timestamp, String code, object user)
         {
-            try 
+            try
             {
                 rwlock.AcquireReaderLock(lockingTimeout);
 
-                return codes.Contains(new UsedCode(timestamp, code));
-            } 
-            finally 
+                return codes.Contains(new UsedCode(timestamp, code, user));
+            }
+            finally
             {
                 rwlock.ReleaseReaderLock();
             }
