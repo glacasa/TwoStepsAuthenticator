@@ -50,8 +50,8 @@ namespace TwoStepsAuthenticator.UnitTests
             var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
-            Assert.IsTrue(authenticator.CheckCode(secret, code));
-            Assert.IsFalse(authenticator.CheckCode(secret, code));
+            Assert.IsTrue(authenticator.CheckCode(secret, code, "dummyuser"));
+            Assert.IsFalse(authenticator.CheckCode(secret, code, "dummyuser"));
         }
 
         // Test Vectors from http://tools.ietf.org/html/rfc6238#appendix-B have all length 8. We want a length of 6.
@@ -79,7 +79,7 @@ namespace TwoStepsAuthenticator.UnitTests
             Assert.True(authenticator.CheckCode("H22Q7WAMQYFZOJ2Q", "696227", null, out usedTime));
 
             // 17:23:50 - 30s
-            Assert.AreEqual(usedTime.Hour, 17);
+            Assert.AreEqual(usedTime.Hour, date.Hour);
             Assert.AreEqual(usedTime.Minute, 23);
             Assert.AreEqual(usedTime.Second, 20);
         }
