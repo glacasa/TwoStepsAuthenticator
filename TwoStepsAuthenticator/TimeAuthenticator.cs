@@ -100,6 +100,7 @@ namespace TwoStepsAuthenticator
         /// <param name="secret">Shared Secret</param>
         /// <param name="code">OTP</param>
         /// <returns>true if code matches</returns>
+        [Obsolete("The CheckCode method should only be used with a user object")]
         public bool CheckCode(string secret, string code)
         {
             DateTime successfulTime = DateTime.MinValue;

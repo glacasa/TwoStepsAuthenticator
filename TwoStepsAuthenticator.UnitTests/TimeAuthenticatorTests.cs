@@ -25,25 +25,25 @@ namespace TwoStepsAuthenticator.UnitTests
             var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
-            Assert.IsTrue(authenticator.CheckCode(secret, code), "Generated Code doesn't verify");
+            Assert.IsTrue(authenticator.CheckCode(secret, code, "dummyuser"), "Generated Code doesn't verify");
         }
 
         [Test]
-        public void Uses_usedCodesManager()
+        public void UsesUsedCodesManager()
         {
             var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var authenticator = new TimeAuthenticator(mockUsedCodesManager, () => date);
             var secret = Authenticator.GenerateKey();
             var code = authenticator.GetCode(secret);
 
-            authenticator.CheckCode(secret, code);
+            authenticator.CheckCode(secret, code, "dummyuser");
 
             Assert.AreEqual(mockUsedCodesManager.LastChallenge, 0uL);
             Assert.AreEqual(mockUsedCodesManager.LastCode, code);
         }
 
         [Test]
-        public void Prevent_code_reuse() {
+        public void PreventCodeReuse() {
             var date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             var usedCodesManager = new UsedCodesManager();
             var authenticator = new TimeAuthenticator(usedCodesManager, () => date);
@@ -51,6 +51,7 @@ namespace TwoStepsAuthenticator.UnitTests
             var code = authenticator.GetCode(secret);
 
             Assert.IsTrue(authenticator.CheckCode(secret, code, "dummyuser"));
+            Assert.IsTrue(authenticator.CheckCode(secret, code, "otheruser"));
             Assert.IsFalse(authenticator.CheckCode(secret, code, "dummyuser"));
         }
 
@@ -79,9 +80,10 @@ namespace TwoStepsAuthenticator.UnitTests
             Assert.True(authenticator.CheckCode("H22Q7WAMQYFZOJ2Q", "696227", null, out usedTime));
 
             // 17:23:50 - 30s
-            Assert.AreEqual(usedTime.Hour, date.Hour);
-            Assert.AreEqual(usedTime.Minute, 23);
-            Assert.AreEqual(usedTime.Second, 20);
+            var sameDate = date.AddSeconds(-30);
+            Assert.AreEqual(usedTime.Hour, sameDate.Hour);
+            Assert.AreEqual(usedTime.Minute, sameDate.Minute);
+            Assert.AreEqual(usedTime.Second, sameDate.Second);
         }
     }
 }
