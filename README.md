@@ -9,6 +9,8 @@ Compatible with Microsoft Authenticator for Windows Phone, and Google Authentica
 
 You can use this library as well for a client application (if you want to create your own authenticator) or for a server application (add two-step authentication on your asp.net website)
 
+![Build status](https://glacasa.visualstudio.com/DefaultCollection/_apis/public/build/definitions/ab4c93fc-5d51-44a7-b9e5-fcd42fbb9bc3/7/badge)
+
 # TOTP
 
 ## Client usage
