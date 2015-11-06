@@ -11,6 +11,12 @@ You can use this library as well for a client application (if you want to create
 
 ![Build status](https://glacasa.visualstudio.com/DefaultCollection/_apis/public/build/definitions/ab4c93fc-5d51-44a7-b9e5-fcd42fbb9bc3/7/badge)
 
+# Install using Nuget
+
+To install TwoStepsAuthenticator, run the following command in the Package Manager Console
+
+    Install-Package TwoStepsAuthenticator
+
 # TOTP
 
 ## Client usage
