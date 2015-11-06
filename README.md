@@ -1,6 +1,8 @@
 TwoStepsAuthenticator
 =====================
 
+[![NuGet](https://img.shields.io/nuget/v/TwoStepsAuthenticator.svg)](https://github.com/glacasa/TwoStepsAuthenticator)
+
 .net implementation of the TOTP: Time-Based One-Time Password Algorithm and HOTP: HMAC-Based One-Time Password Algorithm<br/>
 RFC 6238 http://tools.ietf.org/html/rfc6238<br>
 RFC 4226 http://tools.ietf.org/html/rfc4226
