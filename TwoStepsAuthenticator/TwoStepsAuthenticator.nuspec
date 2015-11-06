@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>TwoStepsAuthenticator</id>
+    <version>$version$</version>
+    <authors>Guillaume Lacasa</authors>
+    <owners>Guillaume Lacasa</owners>
+    <licenseUrl>https://github.com/glacasa/TwoStepsAuthenticator/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/glacasa/TwoStepsAuthenticator</projectUrl>
+    <!--<iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>-->
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>net implementation of the Time-Based One-Time Password Algorithm (TOTP) RFC 6238</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>totp hotp rfc6238 rfc4226</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+</package>
