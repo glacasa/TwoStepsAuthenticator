@@ -1,6 +1,7 @@
 TwoStepsAuthenticator
 =====================
 
+![Build status](https://glacasa.visualstudio.com/DefaultCollection/_apis/public/build/definitions/ab4c93fc-5d51-44a7-b9e5-fcd42fbb9bc3/7/badge)
 [![NuGet](https://img.shields.io/nuget/v/TwoStepsAuthenticator.svg)](https://github.com/glacasa/TwoStepsAuthenticator)
 
 .net implementation of the TOTP: Time-Based One-Time Password Algorithm and HOTP: HMAC-Based One-Time Password Algorithm<br/>
@@ -11,7 +12,6 @@ Compatible with Microsoft Authenticator for Windows Phone, and Google Authentica
 
 You can use this library as well for a client application (if you want to create your own authenticator) or for a server application (add two-step authentication on your asp.net website)
 
-![Build status](https://glacasa.visualstudio.com/DefaultCollection/_apis/public/build/definitions/ab4c93fc-5d51-44a7-b9e5-fcd42fbb9bc3/7/badge)
 
 # Install using Nuget
 
