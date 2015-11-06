@@ -11,6 +11,6 @@
         <description>.net implementation of the TOTP: Time-Based One-Time Password Algorithm and HOTP: HMAC-Based One-Time Password Algorithm</description>
     </metadata>
     <files>
-        <file src="lib\net45\TwoStepsAuthenticator.dll" target="lib\net45\TwoStepsAuthenticator.dll" />
+        <file src="TwoStepsAuthenticator\bin\Release\TwoStepsAuthenticator.dll" target="lib\net45\TwoStepsAuthenticator.dll" />
     </files>
 </package>
