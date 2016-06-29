@@ -98,7 +98,7 @@ namespace TwoStepsAuthenticatorTestApp
             var auth = new TwoStepsAuthenticator.TimeAuthenticator();
             Code = auth.GetCode(this.Key);
 
-            auth.CheckCode(key, Code);
+            auth.CheckCode(key, Code, "user");
         }
     }
 }
