@@ -39,12 +39,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base32Encoding.cs" />
-    <Compile Include="Authenticator.cs" />
-    <Compile Include="CounterAuthenticator.cs" />
-    <Compile Include="IUsedCodesManager.cs" />
+    <Compile Include="..\TwoStepsAuthenticator.DotnetCore\Authenticator.cs">
+      <Link>Authenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\TwoStepsAuthenticator.DotnetCore\Base32Encoding.cs">
+      <Link>Base32Encoding.cs</Link>
+    </Compile>
+    <Compile Include="..\TwoStepsAuthenticator.DotnetCore\CounterAuthenticator.cs">
+      <Link>CounterAuthenticator.cs</Link>
+    </Compile>
+    <Compile Include="..\TwoStepsAuthenticator.DotnetCore\IUsedCodesManager.cs">
+      <Link>IUsedCodesManager.cs</Link>
+    </Compile>
+    <Compile Include="..\TwoStepsAuthenticator.DotnetCore\TimeAuthenticator.cs">
+      <Link>TimeAuthenticator.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimeAuthenticator.cs" />
     <Compile Include="UsedCodesManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

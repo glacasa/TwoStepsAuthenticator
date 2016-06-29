@@ -9,7 +9,11 @@ namespace TwoStepsAuthenticator
 {
     public abstract class Authenticator
     {
-        private static readonly RNGCryptoServiceProvider Random = new RNGCryptoServiceProvider();    // Is Thread-Safe
+#if CORE
+        private static readonly RandomNumberGenerator Random = RandomNumberGenerator.Create(); 
+#else
+        private static readonly RNGCryptoServiceProvider Random = new RNGCryptoServiceProvider();
+#endif
         private static readonly int KeyLength = 16;
         private static readonly string AvailableKeyChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
