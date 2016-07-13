@@ -79,3 +79,40 @@ And when you check if the code is ok, you need to add the user object to the Che
 ```c#
 bool isok = authenticator.CheckCode(secret, code, user);
 ```
+
+# HOTP
+
+With the HOTP authenticator, the user has an ordered list of codes, and he uses them one by one. When a code is used, all the previous codes are disabled.
+
+On a server application, you will generate a secret key, and you need to store for every user its secret key and the index of the last code used.
+
+```c#
+var key = TwoStepsAuthenticator.Authenticator.GenerateKey();
+```
+
+When the user sends his code, you need to check if it is valid, and is after the last code used. The CheckCode method will check the 10 folloing codes, and return the id of the code used.
+
+```c#
+var secret = user.secretAuthToken;
+var lastCodeUsed = user.lastCodeUsed;
+var code = Request.Form["code"];
+var authenticator = new TwoStepsAuthenticator.CounterAuthenticator();
+ulong newCodeUsed;
+bool isok = authenticator.CheckCode(secret, code, lastCodeUsed, out newCodeUsed);
+
+if (isOk) {
+    user.lastCodeUsed = newCodeUsed;
+}
+```
+
+If you want to generate the codes, you can use the method `GetCode(string secret, ulong counter)`
+
+```c#
+var nextCodes = new List<strig>();
+var secret = user.secretAuthToken;
+var lastCodeUsed = user.lastCodeUsed;
+var authenticator = new TwoStepsAuthenticator.CounterAuthenticator();
+for (int i = lastCodeUsed + 1 ; i < lastCodeUsed + 100 ; i++){
+    nextCodes.Add(authenticator.GetCode(secret, i));
+}
+```
