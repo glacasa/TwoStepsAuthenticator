@@ -14,11 +14,10 @@ namespace TwoStepsAuthenticator
 #else
         private static readonly RNGCryptoServiceProvider Random = new RNGCryptoServiceProvider();
 #endif
-        private static readonly int KeyLength = 16;
         private static readonly string AvailableKeyChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
-        public static string GenerateKey() {
-            var keyChars = new char[KeyLength];
+        public static string GenerateKey(int keyLength = 16) {
+            var keyChars = new char[keyLength];
             for (int i = 0; i < keyChars.Length; i++) {
                 keyChars[i] = AvailableKeyChars[RandomInt(AvailableKeyChars.Length)];
             }
