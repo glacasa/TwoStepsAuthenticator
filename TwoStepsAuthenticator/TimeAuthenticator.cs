@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TwoStepsAuthenticator
 {
@@ -20,8 +16,8 @@ namespace TwoStepsAuthenticator
 
         public TimeAuthenticator(IUsedCodesManager usedCodeManager = null, Func<DateTime> nowFunc = null, int intervalSeconds = 30)
         {
-            this.NowFunc = (nowFunc == null) ? () => DateTime.Now : nowFunc;
-            this.UsedCodeManager = (usedCodeManager == null) ? DefaultUsedCodeManager.Value : usedCodeManager;
+            this.NowFunc = nowFunc ?? (() => DateTime.Now);
+            this.UsedCodeManager = usedCodeManager ?? DefaultUsedCodeManager.Value;
             this.IntervalSeconds = intervalSeconds;
         }
 
@@ -55,9 +51,7 @@ namespace TwoStepsAuthenticator
         /// <returns>true if code matches</returns>
         public bool CheckCode(string secret, string code, object user)
         {
-            DateTime successfulTime = DateTime.MinValue;
-
-            return CheckCode(secret, code, user, out successfulTime);
+            return CheckCode(secret, code, user, out _);
         }
 
         /// <summary>
@@ -103,9 +97,7 @@ namespace TwoStepsAuthenticator
         [Obsolete("The CheckCode method should only be used with a user object")]
         public bool CheckCode(string secret, string code)
         {
-            DateTime successfulTime = DateTime.MinValue;
-
-            return CheckCode(secret, code, null, out successfulTime);
+            return CheckCode(secret, code, null, out _);
         }
 
         private long GetInterval(DateTime dateTime)

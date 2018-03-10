@@ -1,15 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-//using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
+using System.Threading;
 
 namespace TwoStepsAuthenticator
 {
-    /// <summary>
-    /// Local, thread-save used codes manager implementation
-    /// </summary>
     public class UsedCodesManager : IUsedCodesManager
     {
         internal sealed class UsedCode
@@ -48,25 +42,23 @@ namespace TwoStepsAuthenticator
         }
 
         private readonly Queue<UsedCode> codes;
-        private readonly System.Threading.ReaderWriterLock rwlock = new System.Threading.ReaderWriterLock();
-        private readonly TimeSpan lockingTimeout = TimeSpan.FromSeconds(5);
+        private readonly System.Threading.ReaderWriterLockSlim rwlock = new System.Threading.ReaderWriterLockSlim();
         private readonly Timer cleaner;
 
         public UsedCodesManager()
         {
             codes = new Queue<UsedCode>();
-            cleaner = new Timer(TimeSpan.FromMinutes(5).TotalMilliseconds);
-            cleaner.Elapsed += cleaner_Elapsed;
-            cleaner.Start();
+            var delay = (int)TimeSpan.FromMinutes(5).TotalMilliseconds;
+            cleaner = new Timer(cleaner_Elapsed, null, delay, delay);
         }
 
-        void cleaner_Elapsed(object sender, ElapsedEventArgs e)
+        void cleaner_Elapsed(object state)
         {
             var timeToClean = DateTime.Now.AddMinutes(-5);
 
             try
             {
-                rwlock.AcquireWriterLock(lockingTimeout);
+                rwlock.EnterWriteLock();
 
                 while (codes.Count > 0 && codes.Peek().UseDate < timeToClean)
                 {
@@ -75,7 +67,7 @@ namespace TwoStepsAuthenticator
             }
             finally
             {
-                rwlock.ReleaseWriterLock();
+                rwlock.ExitWriteLock();
             }
         }
 
@@ -83,13 +75,13 @@ namespace TwoStepsAuthenticator
         {
             try
             {
-                rwlock.AcquireWriterLock(lockingTimeout);
+                rwlock.EnterWriteLock();
 
                 codes.Enqueue(new UsedCode(timestamp, code, user));
             }
             finally
             {
-                rwlock.ReleaseWriterLock();
+                rwlock.ExitWriteLock();
             }
         }
 
@@ -97,13 +89,13 @@ namespace TwoStepsAuthenticator
         {
             try
             {
-                rwlock.AcquireReaderLock(lockingTimeout);
+                rwlock.EnterWriteLock();
 
                 return codes.Contains(new UsedCode(timestamp, code, user));
             }
             finally
             {
-                rwlock.ReleaseReaderLock();
+                rwlock.ExitWriteLock();
             }
         }
     }

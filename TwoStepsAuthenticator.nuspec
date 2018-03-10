@@ -12,6 +12,6 @@
     </metadata>
     <files>
         <file src="TwoStepsAuthenticator\bin\Release\TwoStepsAuthenticator.dll" target="lib\net45\TwoStepsAuthenticator.dll" />
-        <file src="TwoStepsAuthenticator.DotnetCore\bin\Release\netstandard1.6\TwoStepsAuthenticator.DotnetCore.dll" target="lib\netcore\TwoStepsAuthenticator.dll" />
+        <file src="TwoStepsAuthenticator.DotnetCore\bin\Release\netstandard1.6\TwoStepsAuthenticator.DotnetCore.dll" target="lib\netstandard1.6\TwoStepsAuthenticator.dll" />
     </files>
 </package>

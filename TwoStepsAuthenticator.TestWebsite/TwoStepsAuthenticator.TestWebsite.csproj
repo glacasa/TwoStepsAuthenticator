@@ -20,6 +20,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -150,13 +152,13 @@
     <Content Include="Views\Home\DoubleAuth.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TwoStepsAuthenticator\TwoStepsAuthenticator.csproj">
-      <Project>{6c898cd1-0bf3-4711-847e-ad7dac815cd8}</Project>
-      <Name>TwoStepsAuthenticator</Name>
-    </ProjectReference>
+    <Content Include="Views\Home\Welcome.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Welcome.cshtml" />
+    <ProjectReference Include="..\TwoStepsAuthenticator\TwoStepsAuthenticator.csproj">
+      <Project>{03842fee-34c4-467f-9081-96bed41cefb2}</Project>
+      <Name>TwoStepsAuthenticator</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
