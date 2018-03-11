@@ -9,11 +9,7 @@ namespace TwoStepsAuthenticator
 {
     public abstract class Authenticator
     {
-#if CORE
         private static readonly RandomNumberGenerator Random = RandomNumberGenerator.Create(); 
-#else
-        private static readonly RNGCryptoServiceProvider Random = new RNGCryptoServiceProvider();
-#endif
         private static readonly string AvailableKeyChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
         public static string GenerateKey(int keyLength = 16) {

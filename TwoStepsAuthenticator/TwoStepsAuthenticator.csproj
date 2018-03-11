@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
-    <DefineConstants>$(DefineConstants);CORE</DefineConstants>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
     <AssemblyName>TwoStepsAuthenticator</AssemblyName>
     <NetStandardImplicitPackageVersion>1.6.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
