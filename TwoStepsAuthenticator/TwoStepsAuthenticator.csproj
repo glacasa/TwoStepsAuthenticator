@@ -20,5 +20,8 @@
     <PackageProjectUrl>https://github.com/glacasa/TwoStepsAuthenticator</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <RepositoryUrl>https://github.com/glacasa/TwoStepsAuthenticator</RepositoryUrl>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>tsaKey.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
   </PropertyGroup>
 </Project>
