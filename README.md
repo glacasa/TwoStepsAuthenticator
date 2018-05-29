@@ -90,7 +90,7 @@ On a server application, you will generate a secret key, and you need to store f
 var key = TwoStepsAuthenticator.Authenticator.GenerateKey();
 ```
 
-When the user sends his code, you need to check if it is valid, and is after the last code used. The CheckCode method will check the 10 folloing codes, and return the id of the code used.
+When the user sends his code, you need to check if it is valid, and is after the last code used. The CheckCode method will check the 10 following codes, and return the id of the code used.
 
 ```c#
 var secret = user.secretAuthToken;
