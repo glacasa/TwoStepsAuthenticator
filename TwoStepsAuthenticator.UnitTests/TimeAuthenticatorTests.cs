@@ -65,8 +65,22 @@ namespace TwoStepsAuthenticator.UnitTests
             var date = DateTime.Parse(timeString);
 
             var authenticator = new TimeAuthenticator(mockUsedCodesManager, () => date);
-            Assert.IsTrue(authenticator.CheckCode(secret, code));
+            Assert.IsTrue(authenticator.CheckCode(secret, code, new object()));
+        }
 
+        // This Test Vectors are from a Ruby implementation. They work with the Google Authentificator app.
+        [TestCase("DRMK64PPMMC7TDZF", "2013-12-04 18:33:01 +0100", "661188")]
+        [TestCase("EQOGSM3XZUH6SE2Y", "2013-12-04 18:34:56 +0100", "256804")]
+        [TestCase("4VU7EQACVDMFJSBG", "2013-12-04 18:36:16 +0100", "800872")]
+        public void VerifyKeyRange(string secret, string timeString, string code)
+        {
+            var date = DateTime.Parse(timeString).AddMinutes(5);
+
+            var defaultAuthenticator = new TimeAuthenticator(mockUsedCodesManager, () => date);
+            Assert.IsFalse(defaultAuthenticator.CheckCode(secret, code, new object()));
+            
+            var wideRangeAuthenticator = new TimeAuthenticator(mockUsedCodesManager, () => date, verificationRange:10);
+            Assert.IsTrue(wideRangeAuthenticator.CheckCode(secret, code, new object()));
         }
 
         [Test]
