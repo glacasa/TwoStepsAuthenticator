@@ -1,7 +1,7 @@
 TwoStepsAuthenticator
 =====================
 
-![Build status](https://glacasa.visualstudio.com/DefaultCollection/_apis/public/build/definitions/ab4c93fc-5d51-44a7-b9e5-fcd42fbb9bc3/7/badge)
+[![Build status](https://dev.azure.com/glacasa/GithubBuilds/_apis/build/status/TwoStepsAuthenticator-CI)](https://dev.azure.com/glacasa/GithubBuilds/_build/latest?definitionId=66)
 [![NuGet](https://img.shields.io/nuget/v/TwoStepsAuthenticator.svg)](https://github.com/glacasa/TwoStepsAuthenticator)
 
 .net implementation of the TOTP: Time-Based One-Time Password Algorithm and HOTP: HMAC-Based One-Time Password Algorithm<br/>
