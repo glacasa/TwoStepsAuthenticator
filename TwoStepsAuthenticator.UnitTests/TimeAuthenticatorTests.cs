@@ -10,7 +10,7 @@ namespace TwoStepsAuthenticator.UnitTests
     [TestFixture]
     public class TimeAuthenticatorTests
     {
-        private MockUsedCodesManager mockUsedCodesManager { get; set; }
+        private MockUsedCodesManager mockUsedCodesManager { get; set; } = default!;
 
         [SetUp]
         public void SetUp()

@@ -2,7 +2,7 @@
 {
     internal class MockUsedCodesManager : IUsedCodesManager {
         public long? LastChallenge { get; private set; }
-        public string LastCode { get; private set; }
+        public string LastCode { get; private set; } = string.Empty;
 
         public void AddCode(long challenge, string code, object user) {
             this.LastChallenge = challenge;

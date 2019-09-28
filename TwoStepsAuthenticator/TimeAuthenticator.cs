@@ -15,7 +15,7 @@ namespace TwoStepsAuthenticator
         private readonly int IntervalSeconds;
         private readonly int VerificationRange;
 
-        public TimeAuthenticator(IUsedCodesManager usedCodeManager = null, Func<DateTime> nowFunc = null, int intervalSeconds = 30, int verificationRange = 2)
+        public TimeAuthenticator(IUsedCodesManager? usedCodeManager = null, Func<DateTime>? nowFunc = null, int intervalSeconds = 30, int verificationRange = 2)
         {
             this.NowFunc = nowFunc ?? (() => DateTime.Now);
             this.UsedCodeManager = usedCodeManager ?? DefaultUsedCodeManager.Value;
@@ -64,7 +64,7 @@ namespace TwoStepsAuthenticator
         /// <param name="user">The user</param>
         /// <param name="usedDateTime">Matching time if successful</param>
         /// <returns>true if code matches</returns>
-        public bool CheckCode(string secret, string code, object user, out DateTime usedDateTime)
+        public bool CheckCode(string secret, string code, object? user, out DateTime usedDateTime)
         {
             var baseTime = NowFunc();
             DateTime successfulTime = DateTime.MinValue;
@@ -81,7 +81,10 @@ namespace TwoStepsAuthenticator
                     codeMatch = true;
                     successfulTime = checkTime;
 
-                    UsedCodeManager.AddCode(checkInterval, code, user);
+                    if (user != null)
+                    {
+                        UsedCodeManager.AddCode(checkInterval, code, user);
+                    }
                 }
             }
 
